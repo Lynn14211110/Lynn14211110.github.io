@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 2d5ff4340a4b2f76b1991508602f2ee9ce8bfa41
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -43,7 +46,7 @@ function movetoken(dx,dy)//移动物体并判断是否触墙
 	this.sy +=dy;
 	var i;
 	var wall;//用于每一面墙
-	for(i=0;i<wall.length;i++)
+	for(i=0;i<walls.length;i++)
 	{
 	    wall=walls[i];//抽取第i面墙
 		if(intersect(wall.sx,wall.sy,wall.fx,wall.fy,this.sx,this.sy,this.rad))//检查物体与墙是否相交
@@ -53,6 +56,11 @@ function movetoken(dx,dy)//移动物体并判断是否触墙
 		   break;
 		}
 	}
+	 if(this.sx == goal.sx && this.sy == goal.sy)
+   {alert("you win!");
+     }
+     if(this.sx>900 || this.sx<0 || this.sy<0 || this.sy>350)
+	 {alert("you are out of the canvas!");}
 }
 function Wall(sx,sy,fx,fy,width,stylestring)//墙的初始化设置
 {
@@ -74,7 +82,9 @@ function drawALine()//墙的绘制方法
 	ctx.stroke();//画线
 }
 var mypent=new Token(100,100,20,"rgb(0,0,250)",5);//游戏角色设置
+var goal=new Token(800,250,20,"rgb(0,250,250)",3);
 everything.push(mypent);
+everything.push(goal);
 function init()
 {
     ctx=document.getElementById('canvas').getContext('2d');//完成所有绘制
@@ -84,6 +94,7 @@ function init()
 	canvas1.addEventListener('mouseup',finish,false);
 	window.addEventListener('keydown',getKeyMove,false);
 	drawall();
+	
 }
 function startwall(ev)
 {   
@@ -181,6 +192,11 @@ function intersect(sx,sy,fx,fy,cx,cy,rad)
 	else
 	   {return false;}
 }
+function getgoal()
+{
+   if(this.sx == goal.sx && this.sy == goal.sy)
+   {alert("you win!");}
+}
 function savewalls()
 {
     var w=[];//临时
@@ -261,7 +277,11 @@ Name:<input name="glgame" value="maze_name" type="text">
 <input type="submit" value="GET SAVED WALLS"/>
 </form>
 </body>
+<<<<<<< HEAD
+</html>
+=======
 </html>
 =======
 hello
 >>>>>>> 0449526e741e245d05804991933addacdf055290
+>>>>>>> 2d5ff4340a4b2f76b1991508602f2ee9ce8bfa41
