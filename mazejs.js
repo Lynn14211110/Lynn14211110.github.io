@@ -47,10 +47,14 @@ function movetoken(dx,dy)//移动物体并判断是否触墙
 		}
 	}
 	 if(this.sx == goal.sx && this.sy == goal.sy)
-   {alert("you win!");
+    {alert("you win!");
+     
      }
      if(this.sx>900 || this.sx<0 || this.sy<0 || this.sy>350)
-	 {alert("you are out of the canvas!");}
+	 {alert("you are out of the canvas!");
+      this.sx=100;
+	  this.sy=100;
+     }
 }
 function Wall(sx,sy,fx,fy,width,stylestring)//墙的初始化设置
 {
@@ -59,10 +63,10 @@ function Wall(sx,sy,fx,fy,width,stylestring)//墙的初始化设置
 	this.fx=fx;
 	this.fy=fy;
 	this.width=width;
-	this.draw=drawALine;//设置绘制方法
+	this.draw=drawAline;//设置绘制方法
 	this.strokestyle=stylestring;//颜色
 }
-function drawALine()//墙的绘制方法
+function drawAline()//墙的绘制方法
 {
     ctx.lineWidth=this.width;//线宽
 	ctx.strokeStyle=this.strokestyle;
@@ -82,7 +86,7 @@ function init()
 	canvas1.addEventListener('mousedown',startwall,false);
 	canvas1.addEventListener('mousemove',stretchwall,false);
 	canvas1.addEventListener('mouseup',finish,false);
-	window.addEventListener('keydown',getKeyMove,false);
+	window.addEventListener('keydown',getkeyAndMove,false);
 	drawall();
 	
 }
@@ -138,7 +142,7 @@ function drawall()//绘制所有对象
 	for(i=0;i<everything.length;i++)
 	    {everything[i].draw();}
 }
-function getKeyMove(event)
+function getkeyAndMove(event)
 {
     var keyCode;
 	if(event == null)
@@ -157,11 +161,11 @@ function getKeyMove(event)
 		case 38:mypent.moveit(0,-unit);break;
 		case 39:mypent.moveit(unit,0);break;
 		case 40:mypent.moveit(0,unit);break;
-		Default:window.removeEventListener('keydown',getKeyMove,false);
+		default:window.removeEventListener('keydown',getKeyMove,false);
 	}
 	drawall();
 }
-function intersect(sx,sy,fx,fy,cx,cy,rad)
+function intersect(sx,sy,fx,fy,cx,cy,rad) //用向量算法实现的伪碰撞检测
 {
     var dx;
 	var dy;
@@ -182,11 +186,6 @@ function intersect(sx,sy,fx,fy,cx,cy,rad)
 	else
 	   {return false;}
 }
-function getgoal()
-{
-   if(this.sx == goal.sx && this.sy == goal.sy)
-   {alert("you win!");}
-}
 function savewalls()
 {
     var w=[];//临时
@@ -194,7 +193,7 @@ function savewalls()
 	var sw;//最终字符串保存地址
 	var onewall;//中间字符串保存
 	var i;
-	var lsname =document.sf.slname.value;//取玩家制定的名字，完成本地存储
+	var lsname = document.sf.slname.value;//取玩家制定的名字，完成本地存储
 	for(i=0;i<walls.length;i++)
 	{
 	    w.push(walls[i].sx);
@@ -207,7 +206,8 @@ function savewalls()
 	}
 	sw=allw.join(";");//将allw转换为一个字符串
 	try
-	{localStorage.setItem(lsname,sw);}
+	{localStorage.setItem(lsname,sw);
+	alert("Walls saved as "+lsname);}
 	catch(e)
 	{alert("data not saved,error given: "+e);}
 	return false;
@@ -244,6 +244,7 @@ function getswalls()
 	{
 	    alert("No data retrieved.");
 	}
-	window.addEventListener('keydown',getKeyMove,false);
+	window.addEventListener('keydown',getkeyAndMove,false);
 	return false;
 }
+
