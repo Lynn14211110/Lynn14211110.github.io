@@ -35,16 +35,38 @@ function movetoken(dx,dy)//移动物体并判断是否触墙
     this.sx +=dx;//移动物体
 	this.sy +=dy;
 	var i;
+	var n=1;
 	var wall;//用于每一面墙
 	for(i=0;i<walls.length;i++)
 	{
+		
 	    wall=walls[i];//抽取第i面墙
 		if(intersect(wall.sx,wall.sy,wall.fx,wall.fy,this.sx,this.sy,this.rad))//检查物体与墙是否相交
 		{
+			
+			if(n==1){
+				var l=new Token(10,10,10,"rgb(255,255,86)",6);
+		        everything.push(l);
+				alert("You lose 1 life!");
+			}
+			else if(n==2)
+			{
+				var f=new Token(10,10,10,"rgb(255,0,0)",6);
+		        everything.push(f);
+				alert("You lose 2 lifes!");
+			}
+			else if(n>2)
+			{
+				alert("You lose all lifes,YOU LOSE!");
+				this.sx=100;
+	            this.sy=100;
+			}
 		   this.sx -=dx;//撤回移动
 		   this.sy -=dy;
-		   break;
+		   drawall();
+		   continue;
 		}
+		n++;
 	}
 	 if(this.sx == goal.sx && this.sy == goal.sy)
     {alert("you win!");
@@ -81,8 +103,10 @@ function drawAline()//墙的绘制方法
 
 var mypent=new Token(100,100,20,"rgb(0,0,250)",5);//游戏角色设置
 var goal=new Token(800,250,20,"rgb(0,250,250)",3);
+var life=new Token(10,10,10,"rgb(170,255,86)",6);//生命值
 everything.push(mypent);
 everything.push(goal);
+everything.push(life);
 function init()
 {
     ctx=document.getElementById('canvas').getContext('2d');//完成所有绘制
