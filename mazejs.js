@@ -75,6 +75,10 @@ function drawAline()//墙的绘制方法
 	ctx.lineTo(this.fx,this.fy);//线的终点
 	ctx.stroke();//画线
 }
+
+
+
+
 var mypent=new Token(100,100,20,"rgb(0,0,250)",5);//游戏角色设置
 var goal=new Token(800,250,20,"rgb(0,250,250)",3);
 everything.push(mypent);
