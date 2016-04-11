@@ -1,39 +1,4 @@
-<<<<<<< HEAD
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Build maze</title>
-	<script type="text/javascript" src="mazejs.js">
-	
-</script>
-</head>
-<body onLoad="init();">
-<canvas id="canvas" width="900" height="350">
-</canvas>
-<p>Press mouse button down,drag and release to make a wall.Use arrow key to move token.
-Press any other key to stop and save the maze.</p>
-<form name="sf" onSubmit="return savewalls()">
-To save your maze,enter in a name and click on the SAVE WALLS botton.
-<br/>
-Name:<input name="slname" value="maze_name" type="text">
-<input type="submit" value="SAVE WALLS"/>
-</form>
-<form name="gf" onSubmit="return getwalls()">
-To add old walls,enter in the name and click on the GET SAVED WALLS button.
-<br/>
-Name:<input name="glgame" value="maze_name" type="text">
-<input type="submit" value="GET SAVED WALLS"/>
-</form>
-</body>
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Build maze</title>
-	<script type="text/javascript">
-	var cwidth=900;
+var cwidth=900;
 	var cheight=350;
 	var ctx;//用于保存画布上的信息
 	var everything=[];//保存所有对象
@@ -282,25 +247,3 @@ function getswalls()
 	window.addEventListener('keydown',getKeyMove,false);
 	return false;
 }
-</script>
-</head>
-<body onLoad="init();">
-<canvas id="canvas" width="900" height="350">
-</canvas>
-<p>Press mouse button down,drag and release to make a wall.Use arrow key to move token.
-Press any other key to stop and save the maze.</p>
-<form name="sf" onSubmit="return savewalls()">
-To save your maze,enter in a name and click on the SAVE WALLS botton.
-<br/>
-Name:<input name="slname" value="maze_name" type="text">
-<input type="submit" value="SAVE WALLS"/>
-</form>
-<form name="gf" onSubmit="return getwalls()">
-To add old walls,enter in the name and click on the GET SAVED WALLS button.
-<br/>
-Name:<input name="glgame" value="maze_name" type="text">
-<input type="submit" value="GET SAVED WALLS"/>
-</form>
-</body>
->>>>>>> 9a591815f78815b93dcb823654344d4fdd115d44
-</html>
