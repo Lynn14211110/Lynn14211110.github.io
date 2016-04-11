@@ -161,7 +161,7 @@ function getkeyAndMove(event)
 		case 38:mypent.moveit(0,-unit);break;
 		case 39:mypent.moveit(unit,0);break;
 		case 40:mypent.moveit(0,unit);break;
-		default:window.removeEventListener('keydown',getKeyMove,false);
+		default:window.removeEventListener('keydown',getkeyAndMove,false);
 	}
 	drawall();
 }
@@ -186,65 +186,68 @@ function intersect(sx,sy,fx,fy,cx,cy,rad) //用向量算法实现的伪碰撞检
 	else
 	   {return false;}
 }
-function savewalls()
-{
-    var w=[];//临时
-	var allw=[];//临时
-	var sw;//最终字符串保存地址
-	var onewall;//中间字符串保存
-	var i;
-	var lsname = document.sf.slname.value;//取玩家制定的名字，完成本地存储
-	for(i=0;i<walls.length;i++)
-	{
-	    w.push(walls[i].sx);
-		w.push(walls[i].sy);
-		w.push(walls[i].fx);
-		w.push(walls[i].fy);
-		onewall=w.join("+");
-		allw.push(onewall);//增加到allw
-		w=[];//重置w为空
-	}
-	sw=allw.join(";");//将allw转换为一个字符串
-	try
-	{localStorage.setItem(lsname,sw);
-	alert("Walls saved as "+lsname);}
-	catch(e)
-	{alert("data not saved,error given: "+e);}
-	return false;
+//存储墙体数据，请使用chrome或fireFox测试
+function savewalls() {
+    var w = [];//w存储每个墙体的起始点、结束点坐标信息
+    var allw=[];//allw存储所有的墙体
+    var sw;//所有的信息转换为字符串后保存到sw中
+    var onewall;//存储墙体坐标信息的字符串
+    var i;
+    //获取数据的名称
+    var lsname = document.sf.slname.value;
+    //变量墙体的坐标数据，并将它们保存到w中
+    for (i=0;i<walls.length;i++) {
+        w.push(walls[i].sx);
+        w.push(walls[i].sy);
+        w.push(walls[i].fx);
+        w.push(walls[i].fy);
+        onewall = w.join("+");//将墙体坐标信息转换为字符串，以"+"分割
+        allw.push(onewall);//将墙体添加到allw数组中
+        w = [];//清空w，因为要用它来存储下一个墙体的数据
+    }
+    sw = allw.join(";");//将所有墙体的所有信息转换为字符串，以";"分割传递给sw
+    
+    try {
+     localStorage.setItem(lsname,sw);//存储数据
+     alert("Walls saved as "+lsname);
+        }
+      catch (e) {//捕获数据存储错误，并给出错误提示信息
+         alert("data not saved, error given: "+e);
+          }
+    return false;//方式表单提交后页面跳转
 }
-function getswalls()
-{
-    var swalls;//临时
-	var sw;//临时
-	var i;
-	var sx;
-	var sy;
-	var fx;
-	var fy;
-	var curwall;
-	var lsname=document.gf.glname.value;//抽取指定的名字，以备获取
-	swalls=localStorage.getItem(lsname);
-	if(swalls != null)
-	{
-	    wallstgs=swalls.split(";");
-		for(i=0;i<wallstgs.length;i++)
-		{
-		    sw=wallstgs[i].split("+");
-			sx=Number(sw[0]);
-			sy=Number(sw[1]);
-			fx=Number(sw[2]);
-			fy=Number(sw[3]);
-			curwall=new Wall(sx,sy,fx,fy,wallwidth,wallstyle);
-			walls.push(curwall);
-			everything.push(curwall);
-		}
-		drawall();
-	}
-	else
-	{
-	    alert("No data retrieved.");
-	}
-	window.addEventListener('keydown',getkeyAndMove,false);
-	return false;
+function getwalls() {
+    var swalls;
+    var sw;
+    var i;
+    var sx;
+    var sy;
+    var fx;
+    var fy;
+    var curwall;
+    var lsname=document.gf.glname.value;
+    swalls=localStorage.getItem(lsname);
+    if (swalls!=null) {//如果信息不为空，进行数据解码
+    wallstgs = swalls.split(";");//首先分解成单独的墙体
+    for (i=0;i<wallstgs.length;i++) {//然后将每个墙体的坐标信息分离出来
+        sw = wallstgs[i].split("+");
+        
+        sx = Number(sw[0]);
+        sy = Number(sw[1]);
+        fx = Number(sw[2]);
+        fy = Number(sw[3]);
+        curwall = new Wall(sx,sy,fx,fy,wallwidth,wallstyle);//创建新的墙体
+        walls.push(curwall);//将墙体添加到walls数组中
+        everything.push(curwall);//将墙体添加到everything显示列表中
+    }
+    //刷新屏幕
+    drawall();
+    }
+    else {
+        //如果swalls为空，提示没有存储任何数据
+        alert("No data retrieved.");
+    }
+    //侦听键盘事件
+    window.addEventListener('keydown',getkeyAndMove,false);
+    return false;//防止页面跳转
 }
-
