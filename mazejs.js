@@ -3,8 +3,8 @@ var cwidth=900;
 	var ctx;//用于保存画布上的信息
 	var everything=[];//保存所有对象
 	var curwall;//对应当前墙
-	var wallwidth=5;//固定墙宽
-	var wallstyle="rgb(200,0,200)";
+	var wallwidth=2;//固定墙宽
+	var wallstyle="rgb(0,0,0)";
 	var walls=[];//保存所有墙
 	var inmotion=false;//正在拖动鼠标的指示
 	var unit=10;//物体移动单位
@@ -43,31 +43,41 @@ function movetoken(dx,dy)//移动物体并判断是否触墙
 	    wall=walls[i];//抽取第i面墙
 		if(intersect(wall.sx,wall.sy,wall.fx,wall.fy,this.sx,this.sy,this.rad))//检查物体与墙是否相交
 		{
-			
 			if(n==1){
-				var l=new Token(10,10,10,"rgb(255,255,86)",6);
+		   
+				var l=new Token(110,15,10,"rgb(255,255,255)",6);
+				var f=new Token(90,15,10,"rgb(255,255,86)",6);
+				var ll=new Token(70,15,10,"rgb(255,255,86)",6);
 		        everything.push(l);
+				everything.push(f);
+				everything.push(ll);
 				alert("You lose 1 life!");
 			}
 			else if(n==2)
 			{
-				var f=new Token(10,10,10,"rgb(255,0,0)",6);
-		        everything.push(f);
+				var ff=new Token(70,15,10,"rgb(255,0,0)",6);
+				var lf=new Token(90,15,10,"rgb(255,255,255)",6);
+		        everything.push(ff);
+				everything.push(lf);
 				alert("You lose 2 lifes!");
 			}
 			else if(n>2)
 			{
+				var fl=new Token(70,15,10,"rgb(255,255,255)",6);
+				everything.push(fl);
 				alert("You lose all lifes,YOU LOSE!");
 				this.sx=100;
 	            this.sy=100;
 			}
+			
 		   this.sx -=dx;//撤回移动
 		   this.sy -=dy;
 		   drawall();
-		   continue;
+		  continue;
 		}
 		n++;
 	}
+	
 	 if(this.sx == goal.sx && this.sy == goal.sy)
     {alert("you win!");
      
@@ -78,6 +88,25 @@ function movetoken(dx,dy)//移动物体并判断是否触墙
 	  this.sy=100;
      }
 }
+
+/*function life()
+{
+	var i;
+	var n=1;
+	var wall;//用于每一面墙
+	for(i=0;i<walls.length;i++)
+	{
+		
+	    wall=walls[i];//抽取第i面墙
+		if(intersect(wall.sx,wall.sy,wall.fx,wall.fy,this.sx,this.sy,this.rad))//检查物体与墙是否相交
+		{
+			n++;
+			
+		}
+		
+	}
+	
+}*/
 function Wall(sx,sy,fx,fy,width,stylestring)//墙的初始化设置
 {
     this.sx=sx;
@@ -100,13 +129,19 @@ function drawAline()//墙的绘制方法
 
 
 
-
+var l;
 var mypent=new Token(100,100,20,"rgb(0,0,250)",5);//游戏角色设置
 var goal=new Token(800,250,20,"rgb(0,250,250)",3);
-var life=new Token(10,10,10,"rgb(170,255,86)",6);//生命值
+
+var life=[];
+for(l=0;l<3;l++)
+{
+	life[l]=new Token(l*20+70,15,10,"rgb(170,255,86)",6);//生命值
+	everything.push(life[l]);
+}
 everything.push(mypent);
 everything.push(goal);
-everything.push(life);
+
 function init()
 {
     ctx=document.getElementById('canvas').getContext('2d');//完成所有绘制
@@ -116,7 +151,6 @@ function init()
 	canvas1.addEventListener('mouseup',finish,false);
 	window.addEventListener('keydown',getkeyAndMove,false);
 	drawall();
-	
 }
 function startwall(ev)
 {   
@@ -169,7 +203,11 @@ function drawall()//绘制所有对象
 	var i;
 	for(i=0;i<everything.length;i++)
 	    {everything[i].draw();}
+    ctx.font = "bold 20px sans-serif";
+	ctx.strokeText("Life:", 10, 20);
+	ctx.strokeStyle="000000";
 }
+
 function getkeyAndMove(event)
 {
     var keyCode;
